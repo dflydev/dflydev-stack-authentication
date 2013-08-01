@@ -24,46 +24,50 @@ The Authentication middleware takes care of setting up the handling of an inboun
 
 #### Usage
 
-    use Symfony\Component\HttpFoundation\Response;
-    use Symfony\Component\HttpKernel\HttpKernelInterface;
-    
-    $challenge = function (Response $response) {
-        // Assumptions that can be made:
-        // * 401 status code
-        // * WWW-Authenticate header with a value of "Stack"
-        //
-        // Expectations:
-        // * MAY set WWW-Authenticate header to another value
-        // * MAY return a brand new response (does not have to be
-        //   the original response)
-        // * MUST return a response
-        return $response;
-    };
-    
-    $authenticate = function (HttpKernelInterface $app, $anonymous) {
-        // Assumptions that can be made:
-        // * The $app can be delegated to at any time
-        // * The anonymous boolean indicates whether or not we
-        //   SHOULD allow anonymous requests through or if we
-        //   should challenge immediately.
-        // * Additional state, like $request, $type, and $catch
-        //   should be passed via use statement if they are needed.
-        //
-        // Expectations:
-        // * SHOULD set 'stack.authn.token' attribute on the request
-        //   when authentication is successful.
-        // * MAY delegate to the passed $app
-        // * MAY return a custom response of any status (for example
-        //   returning a 302 or 400 status response is allowed)
-        // * MUST return a response
-    };
+```php
+<?php
 
-    return (new Authentication($app, [
-            'challenge' => $challenge,
-            'authenticate' => $authenticate,
-            'anonymous' => true, // default: false
-        ]))
-        ->handle($request, $type, $catch);
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+
+$challenge = function (Response $response) {
+    // Assumptions that can be made:
+    // * 401 status code
+    // * WWW-Authenticate header with a value of "Stack"
+    //
+    // Expectations:
+    // * MAY set WWW-Authenticate header to another value
+    // * MAY return a brand new response (does not have to be
+    //   the original response)
+    // * MUST return a response
+    return $response;
+};
+
+$authenticate = function (HttpKernelInterface $app, $anonymous) {
+    // Assumptions that can be made:
+    // * The $app can be delegated to at any time
+    // * The anonymous boolean indicates whether or not we
+    //   SHOULD allow anonymous requests through or if we
+    //   should challenge immediately.
+    // * Additional state, like $request, $type, and $catch
+    //   should be passed via use statement if they are needed.
+    //
+    // Expectations:
+    // * SHOULD set 'stack.authn.token' attribute on the request
+    //   when authentication is successful.
+    // * MAY delegate to the passed $app
+    // * MAY return a custom response of any status (for example
+    //   returning a 302 or 400 status response is allowed)
+    // * MUST return a response
+};
+
+return (new Authentication($app, [
+        'challenge' => $challenge,
+        'authenticate' => $authenticate,
+        'anonymous' => true, // default: false
+    ]))
+    ->handle($request, $type, $catch);
+```
 
 ### WwwAuthenticateStackChallenge Middleware
 
@@ -75,23 +79,27 @@ The WwwAuthenticateStackChallenge middleware takes care of setting up the handli
 
 #### Usage
 
-    use Symfony\Component\HttpFoundation\Response;
-    
-    $challenge = function (Response $response) {
-        // Assumptions that can be made:
-        // * 401 status code
-        // * WWW-Authenticate header with a value of "Stack"
-        //
-        // Expectations:
-        // * MAY set WWW-Authenticate header to another value
-        // * MAY return a brand new response (does not have to be
-        //   the original response)
-        // * MUST return a response
-        return $response;
-    };
-    
-    return (new WwwAuthenticateStackChallenge($app, $challenge))
-        ->handle($request, $type, $catch);
+```php
+<?php
+
+use Symfony\Component\HttpFoundation\Response;
+
+$challenge = function (Response $response) {
+    // Assumptions that can be made:
+    // * 401 status code
+    // * WWW-Authenticate header with a value of "Stack"
+    //
+    // Expectations:
+    // * MAY set WWW-Authenticate header to another value
+    // * MAY return a brand new response (does not have to be
+    //   the original response)
+    // * MUST return a response
+    return $response;
+};
+
+return (new WwwAuthenticateStackChallenge($app, $challenge))
+    ->handle($request, $type, $catch);
+```
 
 
 License
