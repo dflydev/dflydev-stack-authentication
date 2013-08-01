@@ -1,6 +1,6 @@
 {
     "name": "dflydev/stack-authentication",
-    "description": "Middlewares to support Stack-2 Authentication conventions",
+    "description": "STACK-2 Authentication Middlewares",
     "keywords": ["stack", "stack-2"],
     "license": "MIT",
     "authors": [
