@@ -81,13 +81,12 @@ $authenticate = function (HttpKernelInterface $app, $anonymous) {
     // * MUST return a response
 };
 
-return (new Authentication($app, [
-        'challenge' => $challenge,
-        'check' => $check,
-        'authenticate' => $authenticate,
-        'anonymous' => true, // default: false
-    ]))
-    ->handle($request, $type, $catch);
+$app = new Authentication($app, [
+    'challenge' => $challenge,
+    'check' => $check,
+    'authenticate' => $authenticate,
+    'anonymous' => true, // default: false
+]);
 ```
 
 ### WwwAuthenticateStackChallenge Middleware
