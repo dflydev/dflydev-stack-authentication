@@ -10,6 +10,7 @@ class Authentication implements HttpKernelInterface
 {
     private $app;
     private $challenge;
+    private $check;
     private $authenticate;
     private $anonymous;
 
@@ -19,7 +20,20 @@ class Authentication implements HttpKernelInterface
 
         if (!isset($options['challenge'])) {
             $options['challenge'] = function (Response $response) {
+                // Default challenge is to not challenge.
                 return $response;
+            };
+        }
+
+        if (!isset($options['check'])) {
+            $options['check'] = function (
+                Request $request,
+                $type = HttpKernelInterface::MASTER_REQUEST,
+                $catch = true
+            ) {
+                // Default check is to see if the request has an authorization
+                // header.
+                return $request->headers->has('authorization');
             };
         }
 
@@ -28,6 +42,7 @@ class Authentication implements HttpKernelInterface
         }
 
         $this->challenge = $options['challenge'];
+        $this->check = $options['check'];
         $this->authenticate = $options['authenticate'];
         $this->anonymous = $options['anonymous'];
     }
@@ -44,9 +59,9 @@ class Authentication implements HttpKernelInterface
                 ->handle($request, $type, $catch);
         }
 
-        if ($request->headers->has('authorization')) {
-            // If we have an authorization header we should try and authenticate
-            // the request.
+        if (call_user_func($this->check, $request, $type, $catch)) {
+            // Check the request to see if we should authenticate. If we should,
+            // we should call our authenticate callback and return its response.
             return call_user_func($this->authenticate, $this->app, $this->anonymous);
         }
 

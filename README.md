@@ -22,8 +22,10 @@ tasks:
 
  * If the `stack.authn.token` is set, it wraps the application in
    `WwwAuthenticateStackChallenge` and delegates.
- * If the there is an `authorization` header, it returns the result of then
-   **authenticate** callback.
+ * Checks the request by calling the **check** callback. The return value is a
+   boolean. If true, the **authenticate** callback is called and its return
+   value is returned. If false, we should not. The default check is to see if
+   there is an Authorization header.
  * If anonymous requests are received and anonymous requests are allowed, it
    wraps the application in `WwwAuthenticateStackChallenge` and delegates.
  * Otherwise, it returns the result of the **challenge** callback.
@@ -35,6 +37,18 @@ tasks:
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+
+$check = function (
+    Request $request,
+    $type = HttpKernelInterface::MASTER_REQUEST,
+    $catch = true
+) {
+    // This is the default 'check' callback if a check callback is not defined.
+    // This is here merely for demonstration purposes; if authentication relies
+    // on the existence of an 'authorization' header a 'check' callback does not
+    // need to be defined.
+    return $request->headers->has('authorization');
+};
 
 $challenge = function (Response $response) {
     // Assumptions that can be made:
@@ -69,6 +83,7 @@ $authenticate = function (HttpKernelInterface $app, $anonymous) {
 
 return (new Authentication($app, [
         'challenge' => $challenge,
+        'check' => $check,
         'authenticate' => $authenticate,
         'anonymous' => true, // default: false
     ]))
