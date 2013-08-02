@@ -1,7 +1,8 @@
 STACK-2 Authentication Middlewares
 ==================================
 
-A collection of [Stack][0] middlewares designed to help Stack Authentication middleware implementors adhere to the [STACK-2 Authentication][1] conventions.
+A collection of [Stack][0] middlewares designed to help Stack Authentication
+middleware implementors adhere to the [STACK-2 Authentication][1] conventions.
 
 
 Installation
@@ -15,11 +16,16 @@ Middlewares
 
 ### Authentication Middleware
 
-The Authentication middleware takes care of setting up the handling of an inbound request by taking care of some [STACK-2 Authentication][2] housekeeping tasks:
+The Authentication middleware takes care of setting up the handling of an
+inbound request by taking care of some [STACK-2 Authentication][2] housekeeping
+tasks:
 
- * If the `stack.authn.token` is set, it wraps the application in `WwwAuthenticateStackChallenge` and delegates.
- * If the there is an `authorization` header, it returns the result of then **authenticate** callback.
- * If anonymous requests are received and anonymous requests are allowed, it wraps the application in `WwwAuthenticateStackChallenge` and delegates.
+ * If the `stack.authn.token` is set, it wraps the application in
+   `WwwAuthenticateStackChallenge` and delegates.
+ * If the there is an `authorization` header, it returns the result of then
+   **authenticate** callback.
+ * If anonymous requests are received and anonymous requests are allowed, it
+   wraps the application in `WwwAuthenticateStackChallenge` and delegates.
  * Otherwise, it returns the result of the **challenge** callback.
 
 #### Usage
@@ -71,9 +77,12 @@ return (new Authentication($app, [
 
 ### WwwAuthenticateStackChallenge Middleware
 
-The WwwAuthenticateStackChallenge middleware takes care of setting up the handling of an outbound response by taking care of some [STACK-2 Authentication][2] housekeeping tasks:
+The WwwAuthenticateStackChallenge middleware takes care of setting up the
+handling of an outbound response by taking care of some
+[STACK-2 Authentication][2] housekeeping tasks:
 
- * If the response has a 401 status code and has a WWW-Authenticate header with the value of Stack, it returns the result of the **challenge** callback.
+ * If the response has a 401 status code and has a WWW-Authenticate header with
+   the value of Stack, it returns the result of the **challenge** callback.
  * Otherwise the original response from the delegated app is returned.
 
 
@@ -111,7 +120,8 @@ MIT, see LICENSE.
 Community
 ---------
 
-If you have questions or want to help out, join us in **#stackphp** or **#dflydev** channels on **irc.freenode.net**.
+If you have questions or want to help out, join us in the **#stackphp** or
+**#dflydev** channels on **irc.freenode.net**.
 
 
 [0]: http://stackphp.com/
