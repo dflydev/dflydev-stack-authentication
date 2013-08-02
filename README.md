@@ -1,7 +1,7 @@
 STACK-2 Authentication Middlewares
 ==================================
 
-A collection of [Stack][0] middlewares designed to help Stack Authentication
+A collection of [Stack][0] middlewares designed to help authentication
 middleware implementors adhere to the [STACK-2 Authentication][1] conventions.
 
 
